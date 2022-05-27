@@ -1,5 +1,6 @@
 import React from 'react'
-import AppRouter from './components/router/AppRouter'
+import AppRouter from './router/AppRouter'
+
 
 const CalendarApp = () => {
   return (
