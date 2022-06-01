@@ -14,6 +14,8 @@ import 'moment/locale/es'
 import CalendarEvent from './CalendarEvent'
 import CalendarModal from './CalendarModal'
 import { openModal } from '../../actions/ui'
+import { eventSetActive } from '../../actions/events'
+import AddNewFab from '../ui/AddNewFab'
 moment.locale('es')
 
 const localizer = momentLocalizer(moment)
@@ -40,7 +42,7 @@ const CalendarScreen = () => {
     dispatch(openModal())
   }
   const onSelectEvent = (e) => {
-
+    dispatch(eventSetActive(e))
   }
   const onViewChange = (e) => {
     setLasView(e)
@@ -79,6 +81,7 @@ const CalendarScreen = () => {
           }}
         />
 
+          <AddNewFab/>
           <CalendarModal/>
 
     </div>
