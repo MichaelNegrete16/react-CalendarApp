@@ -4,9 +4,8 @@ import { types } from "../types/types"
 const initialState = {
     events :[{
         title: 'cumpleaños del jefe',
-        start: moment().toDate(),
-        end: moment().add(2, 'hour').toDate(),
-        bgcolor: '#fafafa',
+        startDate: moment().toDate(),
+        endDate: moment().add(2, 'hour').toDate(),
         notes:'Comprar el pastel',
         user:{
           _id:'123',
@@ -29,6 +28,12 @@ export const calendarReducer = (state = initialState, action) => {
             return{
                 ...state,
                 activeEvent: action.payload
+            }
+        
+        case types.eventClearActiveEvent:
+            return{
+                ...state,
+                activeEvent: null
             }
     
         default:

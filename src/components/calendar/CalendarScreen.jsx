@@ -7,7 +7,7 @@ import Navbar from '../ui/Navbar'
 import { mensajes } from '../../helpers/calendar-messages-es'
 
 // Redux
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 // Cambiar idioma del moment
 import 'moment/locale/es'
@@ -19,26 +19,25 @@ import AddNewFab from '../ui/AddNewFab'
 moment.locale('es')
 
 const localizer = momentLocalizer(moment)
-const events = [{
-  title: 'cumpleaños del jefe',
-  start: moment().toDate(),
-  end: moment().add(2, 'hour').toDate(),
-  bgcolor: '#fafafa',
-  notes:'Comprar el pastel',
-  user:{
-    _id:'123',
-    name:'Michael'
-  }
-}]
+// const events = [{
+//   title: 'cumpleaños del jefe',
+//   start: moment().toDate(),
+//   end: moment().add(2, 'hour').toDate(),
+//   notes:'Comprar el pastel',
+//   user:{
+//     _id:'123',
+//     name:'Michael'
+//   }
+// }]
 
 const CalendarScreen = () => {
 
   const dispatch = useDispatch()
+  const {events} = useSelector(state => state.calendar)
   const [lasView, setLasView] = useState(localStorage.getItem('lastView') || 'month')
 
   // Eventos
   const onDoubleClick = (e) => {
-    
     dispatch(openModal())
   }
   const onSelectEvent = (e) => {
@@ -68,8 +67,8 @@ const CalendarScreen = () => {
         <Calendar
           localizer={localizer}
           events={events}
-          startAccessor="start"
-          endAccessor="end"
+          startAccessor="startDate"
+          endAccessor="endDate"
           messages={mensajes}
           eventPropGetter={eventStyleGetter}
           onDoubleClickEvent={onDoubleClick}

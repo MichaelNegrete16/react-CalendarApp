@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Modal from 'react-modal';
 import DateTimePicker from 'react-datetime-picker';
 import moment from 'moment';
@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
 import { closeModa } from '../../actions/ui';
-import { eventAddNew } from '../../actions/events';
+import { eventAddNew, eventClearActiveEvent } from '../../actions/events';
 
 const customStyles = {
     content: {
@@ -24,23 +24,34 @@ Modal.setAppElement('#root');
 const now = moment().minutes(0).seconds(0).hour(1,'hours')
 const end = now.clone().add(1,'hours')
 
+const initEvent = {
+    title:'',
+    note:'',
+    startDate: now.toDate(),
+    endDate: end.toDate()
+}
+
 const CalendarModal = () => {
 
     const {modalOpen} = useSelector(state => state.ui)
+    const {activeEvent} = useSelector(state => state.calendar)
     const dispatch = useDispatch()
 
     const [dateStart, setDateStart] = useState(now.toDate())
     const [dateEnd, setDateEnd] = useState(end.toDate())
     const [titleValid, setTitleValid] = useState(true)
 
-    const [formValues, setFormValues] = useState({
-        title: 'Evento',
-        notes: '',
-        start: now.toDate(),
-        final: end.toDate()
-    })
+    const [formValues, setFormValues] = useState(initEvent)
 
-    const {title,notes,start,final} = formValues
+    const {title,notes,startDate,endDate} = formValues
+
+    // Mostrar los datos al dar dobleClick en el modal
+    useEffect(() => {
+        if(activeEvent){
+            setFormValues(activeEvent)
+        }
+    }, [activeEvent, setFormValues])
+    
 
     const handleInputChange = ({target}) => {
         setFormValues({
@@ -51,28 +62,32 @@ const CalendarModal = () => {
 
     const closeModal = () => {
         dispatch(closeModa())
+        // Restablecer los valores del form y del event
+        dispatch(eventClearActiveEvent())
+        setFormValues(initEvent)
+        
     }
 
     const handleStartDateChange = e => {
         setDateStart(e)
         setFormValues({
             ...formValues,
-            start: e
+            startDate: e
         })
     }
     const handleEndDateChange = e => {
         setDateEnd(e)
         setFormValues({
             ...formValues,
-            final: e
+            endDate: e
         })
     }
 
     const handleSubmitForm = e => {
         e.preventDefault()
         
-        const momentStart = moment(start)
-        const momentEnd = moment(final)
+        const momentStart = moment(startDate)
+        const momentEnd = moment(endDate)
 
         if( momentStart.isSameOrAfter(momentEnd) ){
             return Swal.fire('Error','La fecha final debe ser mayor a la de inicio', 'error')       
