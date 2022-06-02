@@ -19,3 +19,10 @@ export const eventClearActiveEvent = () => {
         type: types.eventClearActiveEvent
     }
 }
+
+export const eventUpdateElement = event => {
+    return{
+        type:types.eventUpdate,
+        payload:event
+    }
+}
