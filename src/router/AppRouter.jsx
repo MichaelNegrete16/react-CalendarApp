@@ -5,7 +5,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 
 const AppRouter = () => {
   
-    const authStatus = 'not-authenticated'
+    const authStatus = 'authenticated' //'not-authenticated'
 
     return (
         <Routes>
