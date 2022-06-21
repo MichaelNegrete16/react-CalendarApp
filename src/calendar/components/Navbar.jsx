@@ -9,7 +9,7 @@ const Navbar = () => {
             Michael
         </span>
 
-        <button className='btn btn-outline-danger'>
+        <button className='btn btn-outline-danger'> 
             <i className='fas fa-sign-out-alt'></i>
             <span>Salir</span>
         </button>
