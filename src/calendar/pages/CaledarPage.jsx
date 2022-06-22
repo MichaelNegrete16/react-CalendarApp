@@ -8,6 +8,7 @@ import { getMessagesES } from '../../helpers/getMessages'
 import Navbar from '../components/Navbar'
 import CalendarEvent from '../components/CalendarEvent'
 import { useState } from 'react'
+import CalendarModal from '../components/CalendarModal'
 
 
 const event = [{
@@ -72,6 +73,8 @@ const CaledarPage = () => {
         onSelectEvent={onSelect}
         onView={onViewChange}
       />
+
+      <CalendarModal/>
 
     </>
   )
