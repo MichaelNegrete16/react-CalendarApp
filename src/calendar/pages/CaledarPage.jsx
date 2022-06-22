@@ -7,6 +7,7 @@ import { getMessagesES } from '../../helpers/getMessages'
 
 import Navbar from '../components/Navbar'
 import CalendarEvent from '../components/CalendarEvent'
+import { useState } from 'react'
 
 
 const event = [{
@@ -25,6 +26,8 @@ const event = [{
 
 const CaledarPage = () => {
 
+  const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'week')
+
   const eventStyleGetter = (event,start,end,isSelected) => {
       const style ={
         backgroundColor: 'black',
@@ -37,6 +40,17 @@ const CaledarPage = () => {
       }
   }
 
+  const onDoubleClick = event => {
+      console.log({doubleClick: event})
+  }
+  const onSelect = event => {
+      console.log({click: event})
+  }
+  const onViewChange = event => {
+    localStorage.setItem('lastView', event)
+    setLastView(event)
+  }
+
   return (
     <>
       <Navbar/>
@@ -46,6 +60,7 @@ const CaledarPage = () => {
         messages={getMessagesES()}
         localizer={localizer}
         events={event}
+        defaultView={lastView}
         startAccessor="start"
         endAccessor="end"
         style={{ height: 'calc(100vh -  80px)' }}
@@ -53,6 +68,9 @@ const CaledarPage = () => {
         components={{
           event: CalendarEvent
         }}
+        onDoubleClickEvent={onDoubleClick}
+        onSelectEvent={onSelect}
+        onView={onViewChange}
       />
 
     </>
