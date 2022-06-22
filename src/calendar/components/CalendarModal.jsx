@@ -1,5 +1,8 @@
 import { addHours,differenceInSeconds } from "date-fns";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+
+import Swal from "sweetalert2";
+import 'sweetalert2/dist/sweetalert2.min.css'
 
 import Modal from "react-modal"
 import DatePicker, {registerLocale} from "react-datepicker";
@@ -25,6 +28,7 @@ Modal.setAppElement('#root');
 const CalendarModal = () => {
     
     const [isOpen, setIsOpen] = useState(true)
+    const [formsSubmited, setFormsSubmited] = useState(false)
 
     const [formValues, setFormValues] = useState({
         title: 'Michael',
@@ -32,6 +36,16 @@ const CalendarModal = () => {
         start: new Date(),
         end: addHours(new Date(), 2)
     })
+
+    // Cambiar la clase para poner si es valido o no
+    const titleClass = useMemo(() => {
+
+        if(!formsSubmited) return ''
+        return (formValues.title.length > 0)
+            ? 'is-valid'
+            : 'is-invalid'
+
+    }, [formValues.title, formsSubmited])
 
     const onInputchange = ({target}) => {
         setFormValues({
@@ -54,12 +68,14 @@ const CalendarModal = () => {
 
     const onSubmit = e => {
         e.preventDefault()
+        // Saber si el formulario a sido intentado postear
+        setFormsSubmited(true)
 
         // Validar que la fecha final sea mayor que la inicial
         const difference = differenceInSeconds(formValues.end, formValues.start)
 
         if(isNaN( difference ) || difference <= 0 ){
-            console.log('Error en la fecha')
+            Swal.fire('Fechas incorrectas','Revisar las fechas ingresadas','error')
             return
         }
 
@@ -119,7 +135,7 @@ const CalendarModal = () => {
                     <label>Titulo y notas</label>
                     <input 
                         type="text" 
-                        className="form-control"
+                        className={`form-control ${titleClass}`}
                         placeholder="Título del evento"
                         name="title"
                         autoComplete="off"
