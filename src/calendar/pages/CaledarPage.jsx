@@ -9,6 +9,7 @@ import Navbar from '../components/Navbar'
 import CalendarEvent from '../components/CalendarEvent'
 import { useState } from 'react'
 import CalendarModal from '../components/CalendarModal'
+import { useUiStore } from '../../hooks/useUiStore'
 
 
 const event = [{
@@ -27,6 +28,7 @@ const event = [{
 
 const CaledarPage = () => {
 
+  const {openDateModal} = useUiStore()
   const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'week')
 
   const eventStyleGetter = (event,start,end,isSelected) => {
@@ -41,8 +43,9 @@ const CaledarPage = () => {
       }
   }
 
-  const onDoubleClick = event => {
-      console.log({doubleClick: event})
+  const onDoubleClick = (event) => {
+      // console.log({doubleClick: event})
+      openDateModal()
   }
   const onSelect = event => {
       console.log({click: event})
