@@ -1,34 +1,23 @@
+import { useState } from 'react'
 import { Calendar} from 'react-big-calendar'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
-import { addHours } from 'date-fns/esm'
 
 import { localizer } from '../../helpers/calendarLocalizer'
 import { getMessagesES } from '../../helpers/getMessages'
 
 import Navbar from '../components/Navbar'
 import CalendarEvent from '../components/CalendarEvent'
-import { useState } from 'react'
 import CalendarModal from '../components/CalendarModal'
+
+// Custom - Hooks
 import { useUiStore } from '../../hooks/useUiStore'
-
-
-const event = [{
-  title:'Cunpleaños del jefe',
-  notes:'Hay que comprar el pastel',
-  start: new Date(),
-  end: addHours(new Date(), 2),
-  user:{
-    uid: 123,
-    name: 'Michael'
-  }
-}]
-
-
+import {useCalendarStore} from '../../hooks/useCalendarStore'
 
 
 const CaledarPage = () => {
 
   const {openDateModal} = useUiStore()
+  const {events} = useCalendarStore()
   const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'week')
 
   const eventStyleGetter = (event,start,end,isSelected) => {
@@ -43,7 +32,7 @@ const CaledarPage = () => {
       }
   }
 
-  const onDoubleClick = (event) => {
+  const onDoubleClick = () => {
       // console.log({doubleClick: event})
       openDateModal()
   }
@@ -63,7 +52,7 @@ const CaledarPage = () => {
         culture='es'
         messages={getMessagesES()}
         localizer={localizer}
-        events={event}
+        events={events}
         defaultView={lastView}
         startAccessor="start"
         endAccessor="end"
