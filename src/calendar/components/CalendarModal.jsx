@@ -33,7 +33,7 @@ Modal.setAppElement('#root');
 const CalendarModal = () => {
     
     const {isDateModalOpen,closeDateModal} = useUiStore()
-    const {activeEvent} = useCalendarStore()
+    const {activeEvent, startSavingEvent} = useCalendarStore()
     const [formsSubmited, setFormsSubmited] = useState(false)
 
     const [formValues, setFormValues] = useState({
@@ -80,7 +80,7 @@ const CalendarModal = () => {
         closeDateModal()
     }
 
-    const onSubmit = e => {
+    const onSubmit = async e => {
         e.preventDefault()
         // Saber si el formulario a sido intentado postear
         setFormsSubmited(true)
@@ -98,8 +98,10 @@ const CalendarModal = () => {
 
         console.log(formValues)
 
-        // TODO: 
-        // Remover errores en pantalla
+        // Guardar datos del formulario
+        await startSavingEvent(formValues)
+        closeDateModal()
+        setFormsSubmited(false)
 
     }
 
