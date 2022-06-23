@@ -12,6 +12,8 @@ import es from 'date-fns/locale/es'
 registerLocale('es',es)
 
 import { useUiStore } from "../../hooks/useUiStore";
+import { useEffect } from "react";
+import { useCalendarStore } from "../../hooks/useCalendarStore";
 
 
 const customStyles = {
@@ -31,6 +33,7 @@ Modal.setAppElement('#root');
 const CalendarModal = () => {
     
     const {isDateModalOpen,closeDateModal} = useUiStore()
+    const {activeEvent} = useCalendarStore()
     const [formsSubmited, setFormsSubmited] = useState(false)
 
     const [formValues, setFormValues] = useState({
@@ -49,6 +52,14 @@ const CalendarModal = () => {
             : 'is-invalid'
 
     }, [formValues.title, formsSubmited])
+
+    // Poner los datos en el modal
+    useEffect(() => {
+        if(activeEvent !== null){
+            setFormValues({...activeEvent})
+        }
+    }, [activeEvent])
+    
 
     const onInputchange = ({target}) => {
         setFormValues({
