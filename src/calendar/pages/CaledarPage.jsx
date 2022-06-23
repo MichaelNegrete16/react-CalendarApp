@@ -11,6 +11,7 @@ import Navbar from '../components/Navbar'
 import CalendarEvent from '../components/CalendarEvent'
 import CalendarModal from '../components/CalendarModal'
 import FabAddNew from '../components/FabAddNew'
+import FabDelete from '../components/FabDelete'
 
 // Custom - Hooks
 import { useUiStore } from '../../hooks/useUiStore'
@@ -72,6 +73,7 @@ const CaledarPage = () => {
 
       <CalendarModal/>
       <FabAddNew/>
+      <FabDelete/>
 
     </>
   )
