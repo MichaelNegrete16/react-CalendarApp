@@ -22,7 +22,7 @@ const registerFormField = {
 
 const LoginPage = () => {
 
-    const {startLogin, errrorMessage} = useAuthStore()
+    const {startLogin, errrorMessage, startRegistro} = useAuthStore()
 
     const  {loginEmail,loginPassword,onInputChange: onLoginInputChange} = useForm(loginFormField)
     const  {registerName,registerEmail,registerPassword,registerPassword2, onInputChange: onRegisterChange} = useForm(registerFormField)
@@ -34,7 +34,13 @@ const LoginPage = () => {
 
     const registerSubmit = (e) => {
         e.preventDefault()
-        console.log({registerName,registerEmail,registerPassword,registerPassword2})
+        // Verificar que las contraseñas sena iguales
+        if(registerPassword !== registerPassword2){
+            Swal.fire('Error en la autenticacion','Las contraseñas deben ser iguales','error')
+            return
+        }
+
+        startRegistro({ name:registerName, email:registerEmail, password:registerPassword })
     }
 
     useEffect(() => {
