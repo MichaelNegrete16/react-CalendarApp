@@ -16,18 +16,23 @@ import FabDelete from '../components/FabDelete'
 // Custom - Hooks
 import { useUiStore } from '../../hooks/useUiStore'
 import {useCalendarStore} from '../../hooks/useCalendarStore'
+import { useAuthStore } from '../../hooks/useAuthStore'
 
 
 const CaledarPage = () => {
 
+  const {user} = useAuthStore()
   const {openDateModal} = useUiStore()
   const {events, setActiveEvent, startLoadingEvents} = useCalendarStore()
 
   const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'week')
 
   const eventStyleGetter = (event,start,end,isSelected) => {
+
+      const isMyEvent = (user.uid === event.user._id) || (user.uid === event.user.uid)
+
       const style ={
-        backgroundColor: 'black',
+        backgroundColor: isMyEvent ? 'black' : 'green',
         borderRadius: '5px',
         opacity: 0.8,
         color:'white'
